@@ -1,4 +1,4 @@
-module dpop
+module github.com/DVV-15324/witches-dpop
 
 go 1.25.12
 
