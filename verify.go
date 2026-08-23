@@ -1,4 +1,4 @@
-package main
+package dpop
 
 import (
 	"crypto/sha256"

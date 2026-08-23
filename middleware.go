@@ -1,4 +1,4 @@
-package main
+package dpop
 
 import (
 	"github.com/DVV-15324/witches/pkg/core/utils"
