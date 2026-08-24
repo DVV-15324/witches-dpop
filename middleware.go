@@ -6,11 +6,7 @@ import (
 	"time"
 )
 
-type PublicKeyStore interface {
-	GetByJKT(jkt string) (interface{}, error)
-}
-
-func DPoPVerify(c *gin.Context, proof string, keyStore PublicKeyStore, clockSkew time.Duration, accessToken string) {
+func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duration, accessToken string) {
 
 	// 1. Trích xuất JKT từ access token (stateless)
 	jkt, err := ExtractJKTFromToken(accessToken)
