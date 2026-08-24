@@ -15,20 +15,12 @@ func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duratio
 		return
 	}
 
-	// 2. Lấy public key từ store (DB/Redis) theo JKT
-	pubKey, err := keyStore.GetByJKT(jkt)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "public key not found"})
-		return
-	}
-
-	// 3. Verify proof
+	// 2. Verify proof
 	opts := VerifyOptions{
 		Proof:       proof,
 		AccessToken: accessToken,
 		Method:      c.Request.Method,
 		URI:         c.Request.URL.String(),
-		PublicKey:   pubKey,
 		ExpectedJKT: jkt,
 		ClockSkew:   clockSkew,
 	}
