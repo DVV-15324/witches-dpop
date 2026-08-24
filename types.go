@@ -44,7 +44,6 @@ type VerifyOptions struct {
 	Method      string        // Expected HTTP method
 	URI         string        // Expected URI
 	ExpectedJKT string        // JKT từ access token (cnf.jkt)
-	PublicKey   interface{}   // *ecdsa.PublicKey (lấy từ DB theo jkt)
 	ClockSkew   time.Duration // Allowed clock skew (default 5s)
 }
 
