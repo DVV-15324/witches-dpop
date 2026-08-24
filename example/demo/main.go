@@ -18,7 +18,7 @@ func main() {
 	}
 	pubKey := &privKey.PublicKey
 
-	// 2. BE chuyển public key sang JWK
+	// 2. FE chuyển public key sang JWK
 	jwk, err := w_dpop.PublicKeyToJWK(pubKey)
 	if err != nil {
 		log.Fatal("PublicKeyToJWK error:", err)
