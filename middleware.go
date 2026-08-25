@@ -1,18 +1,18 @@
 package dpop
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
+	"errors"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
-func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duration, accessToken string) {
+func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duration, accessToken string) error {
 
 	// 1. Trích xuất JKT từ access token (stateless)
 	jkt, err := ExtractJKTFromToken(accessToken)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid access token: " + err.Error()})
-		return
+		return errors.New("invalid access token: " + err.Error())
 	}
 
 	// 2. Verify proof
@@ -29,8 +29,7 @@ func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duratio
 	// Do đó ta không cần truyền PublicKey vào VerifyProof nữa.
 	_, err = VerifyProof(opts)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid DPoP proof: " + err.Error()})
-		return
+		return errors.New("invalid DPoP proof: " + err.Error())
 	}
-
+	return nil
 }
