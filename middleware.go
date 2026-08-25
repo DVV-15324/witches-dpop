@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duration, accessToken string) error {
+func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duration, accessToken string) (*VerifyProofResult, error) {
 
 	// 1. Trích xuất JKT từ access token (stateless)
 	jkt, err := ExtractJKTFromToken(accessToken)
 	if err != nil {
-		return errors.New("invalid access token: " + err.Error())
+		return nil, errors.New("invalid access token: " + err.Error())
 	}
 
 	// 2. Verify proof
@@ -27,9 +27,9 @@ func DPoPVerify(c *gin.Context, proof string, jkt string, clockSkew time.Duratio
 	// PublicKey ở đây sẽ được dùng bên trong verify (nếu parse token)
 	// Nhưng VerifyOptions hiện tại không có PublicKey, vì hàm VerifyProof đã tự lấy từ jwk header.
 	// Do đó ta không cần truyền PublicKey vào VerifyProof nữa.
-	_, err = VerifyProof(opts)
-	if err != nil {
-		return errors.New("invalid DPoP proof: " + err.Error())
+	proof_, err_proof := VerifyProof(opts)
+	if err_proof != nil {
+		return nil, errors.New("invalid DPoP proof: " + err_proof.Error())
 	}
-	return nil
+	return proof_, nil
 }
